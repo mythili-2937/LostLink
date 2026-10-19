@@ -1,0 +1,144 @@
+{
+  "info": {
+    "name": "LostLink REST API - Original Requests Reconstructed",
+    "description": "Reconstructed from seven user-supplied Postman Local Mode .request.yaml snippets. Not a direct Postman export. The original POST /login body and POST /api/items body were empty in supplied snippets. CSRF header values replaced by {{csrfToken}}. Request 04 retains the saved urlencoded body mode despite JSON content-type; fix before sending. Authenticate and obtain a fresh CSRF token first.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01-Get all Items (login page)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02-Create Items (login)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "protocolProfileBehavior": {
+          "followRedirects": false
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03-View all items",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/items"
+      },
+      "response": []
+    },
+    {
+      "name": "04-Create an item",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}",
+            "type": "text"
+          }
+        ],
+        "url": "{{baseUrl}}/api/items",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05-Update an Item",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "X-CSRF-TOKEN",
+            "value": "{{csrfToken}}",
+            "type": "text"
+          }
+        ],
+        "url": "{{baseUrl}}/api/items/7",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Blue Water Bottle - Updated\",\n  \"type\": \"FOUND\",\n  \"category\": \"Others\",\n  \"description\": \"Found a blue water bottle with a white cap near the library entrance.\",\n  \"location\": \"Library Entrance\",\n  \"eventDate\": \"2026-10-18\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "06-Delete an Item",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-CSRF-TOKEN",
+            "value": "{{csrfToken}}",
+            "type": "text"
+          }
+        ],
+        "url": "{{baseUrl}}/api/items/7"
+      },
+      "response": []
+    },
+    {
+      "name": "07-Test Validation not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/items/999999"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "csrfToken",
+      "value": ""
+    }
+  ]
+}

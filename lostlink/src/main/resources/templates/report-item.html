@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Report Item | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+
+<body>
+<main class="page">
+
+    <div class="card report-card">
+
+        <div class="brand">LostLink ✦</div>
+
+        <p class="subtitle">
+            Help reconnect people with their belongings.
+        </p>
+
+        <h2>Report an Item</h2>
+
+        <!-- Success Message -->
+        <p class="success"
+           th:if="${success}"
+           th:text="${success}">
+        </p>
+
+        <!-- Error Message -->
+        <p class="error"
+           th:if="${error}"
+           th:text="${error}">
+        </p>
+
+        <form th:action="@{/items/report}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- Report Type -->
+            <label for="type">Report Type</label>
+
+            <select id="type" name="type" required>
+                <option value="">
+                    Select report type
+                </option>
+
+                <option value="LOST"
+                        th:selected="${oldType == 'LOST'}">
+                    Lost Item
+                </option>
+
+                <option value="FOUND"
+                        th:selected="${oldType == 'FOUND'}">
+                    Found Item
+                </option>
+            </select>
+
+            <!-- Item Name -->
+            <label for="title">Item Name</label>
+
+            <input id="title"
+                   name="title"
+                   type="text"
+                   maxlength="120"
+                   th:value="${oldTitle}"
+                   placeholder="e.g. Black Water Bottle"
+                   required>
+
+            <!-- Category -->
+            <label for="category">Category</label>
+
+            <select id="category" name="category" required>
+
+                <option value="">
+                    Select category
+                </option>
+
+                <option value="Electronics"
+                        th:selected="${oldCategory == 'Electronics'}">
+                    Electronics
+                </option>
+
+                <option value="Books"
+                        th:selected="${oldCategory == 'Books'}">
+                    Books
+                </option>
+
+                <option value="ID Cards"
+                        th:selected="${oldCategory == 'ID Cards'}">
+                    ID Cards
+                </option>
+
+                <option value="Bags"
+                        th:selected="${oldCategory == 'Bags'}">
+                    Bags
+                </option>
+
+                <option value="Keys"
+                        th:selected="${oldCategory == 'Keys'}">
+                    Keys
+                </option>
+
+                <option value="Accessories"
+                        th:selected="${oldCategory == 'Accessories'}">
+                    Accessories
+                </option>
+
+                <option value="Personal Belongings"
+                        th:selected="${oldCategory == 'Personal Belongings'}">
+                    Personal Belongings
+                </option>
+
+                <option value="Others"
+                        th:selected="${oldCategory == 'Others'}">
+                    Others
+                </option>
+
+            </select>
+
+            <!-- Description -->
+            <label for="description">Description</label>
+
+            <textarea id="description"
+                      name="description"
+                      maxlength="2000"
+                      rows="4"
+                      th:text="${oldDescription}"
+                      placeholder="Describe the item, color, brand, and identifying details..."
+                      required></textarea>
+
+            <!-- Location -->
+            <label for="location">Location</label>
+
+            <input id="location"
+                   name="location"
+                   type="text"
+                   maxlength="150"
+                   th:value="${oldLocation}"
+                   placeholder="e.g. College Library"
+                   required>
+
+            <!-- Date -->
+            <label for="eventDate">Date Lost / Found</label>
+
+            <input id="eventDate"
+                   name="eventDate"
+                   type="date"
+                   th:value="${oldEventDate}"
+                   required>
+
+            <!-- Image Upload -->
+            <label for="image">
+                Item Photo (Optional)
+            </label>
+
+            <input id="image"
+                   name="image"
+                   type="file"
+                   accept=".jpg,.jpeg,.png,.webp,.gif,.bmp">
+
+            <p class="upload-hint">
+                Supported: JPG, JPEG, PNG, WebP, GIF, BMP.
+                Maximum size: 5 MB.
+            </p>
+
+            <!-- Submit -->
+            <button type="submit">
+                Submit Report
+            </button>
+
+        </form>
+
+        <!-- Back Button -->
+        <p class="back-link">
+            <a th:href="@{/dashboard}">
+                ← Back to Dashboard
+            </a>
+        </p>
+
+    </div>
+
+</main>
+
+<!-- Prevent future dates -->
+<script>
+    const dateInput = document.getElementById("eventDate");
+
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    dateInput.max = `${year}-${month}-${day}`;
+</script>
+
+</body>
+</html>

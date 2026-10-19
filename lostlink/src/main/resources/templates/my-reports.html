@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>My Reports | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+<body>
+
+<main class="listings-page">
+    <div class="listings-container">
+
+        <header class="listings-header">
+            <div>
+                <div class="brand">LostLink ✦</div>
+                <h1>My Reports</h1>
+                <p class="subtitle">
+                    Items you have reported to your campus.
+                </p>
+            </div>
+
+            <a th:href="@{/dashboard}" class="back-button">
+                ← Dashboard
+            </a>
+            <p class="success"
+   th:if="${success}"
+   th:text="${success}"></p>
+
+<p class="error"
+   th:if="${error}"
+   th:text="${error}"></p>
+        </header>
+
+        <div th:if="${#lists.isEmpty(items)}"
+             class="empty-state">
+
+            <h2>No reports yet</h2>
+
+            <p>You haven't reported any items.</p>
+
+            <a th:href="@{/items/report}" class="action-link">
+                Report an Item
+            </a>
+        </div>
+
+        <div class="items-grid"
+             th:unless="${#lists.isEmpty(items)}">
+
+            <article class="item-card"
+                     th:each="item : ${items}">
+
+                <div class="item-image-wrap"
+                     th:if="${item.imageFilename != null}">
+                    <img class="item-image"
+                         th:src="@{/items/images/{filename}(filename=${item.imageFilename})}"
+                         alt="Reported item photo">
+                </div>
+
+                <div class="item-card-top">
+                    <span class="item-icon">📦</span>
+
+                    <span class="item-badge"
+                          th:classappend="${item.type.name() == 'LOST'} ? 'badge-lost' : 'badge-found'"
+                          th:text="${item.type}">
+                        LOST
+                    </span>
+                </div>
+
+                <h3 th:text="${item.title}">Item Name</h3>
+
+                <p class="item-category"
+                   th:text="${item.category}">
+                    Category
+                </p>
+
+                <p class="item-description"
+                   th:text="${item.description}">
+                    Description
+                </p>
+
+                <div class="item-meta">
+                    <p>
+                        📍 <span th:text="${item.location}">
+                            Location
+                        </span>
+                    </p>
+
+                    <p>
+                        📅 <span th:text="${item.eventDate}">
+                            Date
+                        </span>
+                    </p>
+
+                    <p>
+                        Status:
+                        <strong th:text="${item.status}">OPEN</strong>
+                    </p>
+                </div>
+                
+<div class="report-actions">
+
+    <!-- Edit -->
+    <a th:href="@{/items/{id}/edit(id=${item.id})}"
+       class="report-action edit-action">
+        ✏️ Edit
+    </a>
+    
+<a th:if="${item.status.name() == 'OPEN'}"
+   th:href="@{/items/{id}/matches(id=${item.id})}"
+   class="match-action">
+
+    ✨ Find Matches
+
+</a>
+
+    <!-- Resolve -->
+    <form th:if="${item.status.name() != 'RESOLVED'}"
+          th:action="@{/items/{id}/resolve(id=${item.id})}"
+          method="post">
+
+        <button type="submit"
+                class="report-action resolve-action">
+            ✓ Resolve
+        </button>
+    </form>
+
+    <!-- Delete -->
+    <form th:action="@{/items/{id}/delete(id=${item.id})}"
+          method="post"
+          onsubmit="return confirm('Delete this report permanently?');">
+
+        <button type="submit"
+                class="report-action delete-action">
+            🗑 Delete
+        </button>
+    </form>
+
+</div>
+
+            </article>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Incoming Claims | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<main class="listings-page">
+
+    <div class="listings-container">
+
+        <!-- HEADER -->
+        <header class="listings-header">
+
+            <div>
+                <div class="brand">LostLink ✦</div>
+
+                <h1>Incoming Claims</h1>
+
+                <p class="subtitle">
+                    Review ownership requests for
+                    the items you reported as found.
+                </p>
+            </div>
+
+            <a th:href="@{/dashboard}"
+               class="back-button">
+                ← Dashboard
+            </a>
+
+        </header>
+
+
+        <!-- SUCCESS / ERROR MESSAGES -->
+        <div class="claim-alert-success"
+             th:if="${success != null}"
+             th:text="${success}">
+        </div>
+
+        <div class="claim-error"
+             th:if="${error != null}"
+             th:text="${error}">
+        </div>
+
+
+        <!-- SUMMARY -->
+        <section class="claim-stats">
+
+            <div class="claim-stat-card">
+                <span>Total Incoming Claims</span>
+                <strong th:text="${#lists.size(claims)}">
+                    0
+                </strong>
+            </div>
+
+            <div class="claim-stat-card">
+                <span>Pending Review</span>
+                <strong th:text="${pendingCount}">
+                    0
+                </strong>
+            </div>
+
+        </section>
+
+
+        <!-- EMPTY STATE -->
+        <section class="empty-state"
+                 th:if="${#lists.isEmpty(claims)}">
+
+            <h2>No Incoming Claims</h2>
+
+            <p>
+                Nobody has submitted a claim
+                for your found items yet.
+            </p>
+
+            <a th:href="@{/items/mine}"
+               class="claim-submit-btn">
+                View My Reports
+            </a>
+
+        </section>
+
+
+        <!-- CLAIM CARDS -->
+        <section class="my-claims-grid"
+                 th:unless="${#lists.isEmpty(claims)}">
+
+            <article class="my-claim-card"
+                     th:each="claim : ${claims}">
+
+                <!-- TITLE -->
+                <div class="my-claim-header">
+
+                    <div>
+                        <h3 th:text="${claim.item.title}">
+                            Black Water Bottle
+                        </h3>
+
+                        <p class="my-claim-id"
+                           th:text="|Claim #${claim.id}|">
+                            Claim #1
+                        </p>
+                    </div>
+
+                    <span class="claim-status"
+                          th:classappend="${'status-' + #strings.toLowerCase(claim.status.name())}"
+                          th:text="${claim.status}">
+                        PENDING
+                    </span>
+
+                </div>
+
+
+                <!-- CLAIM DETAILS -->
+                <div class="my-claim-details">
+
+                    <p>
+                        <strong>Claimant:</strong>
+
+                        <span th:text="${claim.claimantId}">
+                            Student ID
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Item Location:</strong>
+
+                        <span th:text="${claim.item.location}">
+                            Library
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Submitted:</strong>
+
+                        <span th:text="${#temporals.format(claim.createdAt, 'dd MMM yyyy, hh:mm a')}">
+                            18 Oct 2026
+                        </span>
+                    </p>
+
+                </div>
+
+
+                <!-- OWNERSHIP PROOF -->
+                <div class="claim-proof-box">
+
+                    <h4>Ownership Proof</h4>
+
+                    <p th:text="${claim.proofDescription}">
+                        My initials are written
+                        underneath the bottle.
+                    </p>
+
+                </div>
+
+
+                <!-- REVIEW FORM -->
+                <form th:if="${claim.status.name() == 'PENDING'}"
+                      method="post"
+                      th:action="@{/claims/review/{id}(id=${claim.id})}">
+
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}">
+
+                    <label class="review-label">
+                        Review Notes (Optional)
+                    </label>
+
+                    <textarea name="reviewNotes"
+                              class="review-textarea"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="Enter your review notes..."></textarea>
+
+                    <div class="review-actions">
+
+                        <button type="submit"
+                                name="decision"
+                                value="APPROVE"
+                                class="review-approve-btn">
+                            ✓ Approve
+                        </button>
+
+                        <button type="submit"
+                                name="decision"
+                                value="REJECT"
+                                class="review-reject-btn">
+                            ✕ Reject
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- EXISTING REVIEW NOTES -->
+                <div class="claim-review-box"
+                     th:if="${claim.reviewNotes != null
+                             and !#strings.isEmpty(claim.reviewNotes)}">
+
+                    <h4>Review Notes</h4>
+
+                    <p th:text="${claim.reviewNotes}">
+                        Claim reviewed.
+                    </p>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </div>
+
+</main>
+
+</body>
+</html>

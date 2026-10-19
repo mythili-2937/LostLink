@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Edit Report | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<main class="page">
+
+    <div class="card report-card">
+
+        <div class="brand">LostLink ✦</div>
+
+        <p class="subtitle">
+            Update your lost or found item details.
+        </p>
+
+        <h2>Edit Report</h2>
+
+        <!-- Error Message -->
+        <p class="error"
+           th:if="${error}"
+           th:text="${error}">
+        </p>
+
+        <!-- Edit Form -->
+        <form th:action="@{/items/{id}/edit(id=${item.id})}"
+      method="post"
+      enctype="multipart/form-data">
+
+            <!-- Report Type -->
+            <label for="type">Report Type</label>
+
+            <select id="type" name="type" required>
+
+                <option value="LOST"
+                        th:selected="${item.type.name() == 'LOST'}">
+                    Lost Item
+                </option>
+
+                <option value="FOUND"
+                        th:selected="${item.type.name() == 'FOUND'}">
+                    Found Item
+                </option>
+
+            </select>
+
+            <!-- Item Name -->
+            <label for="title">Item Name</label>
+
+            <input id="title"
+                   name="title"
+                   type="text"
+                   maxlength="120"
+                   th:value="${item.title}"
+                   placeholder="Enter item name"
+                   required>
+
+            <!-- Category -->
+            <label for="category">Category</label>
+
+            <select id="category" name="category" required>
+
+                <option value="Electronics"
+                        th:selected="${item.category == 'Electronics'}">
+                    Electronics
+                </option>
+
+                <option value="Books"
+                        th:selected="${item.category == 'Books'}">
+                    Books
+                </option>
+
+                <option value="ID Cards"
+                        th:selected="${item.category == 'ID Cards'}">
+                    ID Cards
+                </option>
+
+                <option value="Bags"
+                        th:selected="${item.category == 'Bags'}">
+                    Bags
+                </option>
+
+                <option value="Keys"
+                        th:selected="${item.category == 'Keys'}">
+                    Keys
+                </option>
+
+                <option value="Accessories"
+                        th:selected="${item.category == 'Accessories'}">
+                    Accessories
+                </option>
+
+                <option value="Personal Belongings"
+                        th:selected="${item.category == 'Personal Belongings'}">
+                    Personal Belongings
+                </option>
+
+                <option value="Others"
+                        th:selected="${item.category == 'Others'}">
+                    Others
+                </option>
+
+            </select>
+
+            <!-- Description -->
+            <label for="description">Description</label>
+
+            <textarea id="description"
+                      name="description"
+                      maxlength="2000"
+                      rows="4"
+                      th:text="${item.description}"
+                      placeholder="Describe the item"
+                      required></textarea>
+
+            <!-- Location -->
+            <label for="location">Location</label>
+
+            <input id="location"
+                   name="location"
+                   type="text"
+                   maxlength="150"
+                   th:value="${item.location}"
+                   placeholder="e.g. College Library"
+                   required>
+
+            <!-- Date Lost / Found -->
+            <label for="eventDate">Date Lost / Found</label>
+
+            <input id="eventDate"
+                   name="eventDate"
+                   type="date"
+                   th:value="${item.eventDate}"
+                   required>
+
+            <!-- Existing Image -->
+            
+<!-- Existing Photo -->
+<div th:if="${item.imageFilename != null}">
+
+    <label>Current Item Photo</label>
+
+    <div class="item-image-wrap">
+        <img class="item-image"
+             th:src="@{/items/images/{filename}(filename=${item.imageFilename})}"
+             alt="Current item photo">
+    </div>
+
+</div>
+
+<!-- Change Photo -->
+<label for="image">Change / Upload Photo</label>
+
+<input id="image"
+       name="image"
+       type="file"
+       accept=".jpg,.jpeg,.png,.webp,.gif,.bmp">
+
+<p class="upload-hint">
+    Select a new image to replace the existing photo.
+    Leave empty to keep the current photo.
+    Maximum 5 MB.
+</p>
+
+<!-- Remove Photo -->
+<div th:if="${item.imageFilename != null}"
+     class="remove-photo-option">
+
+    <label>
+        <input type="checkbox"
+               name="removeImage"
+               value="true">
+        Remove current photo
+    </label>
+
+    <p class="upload-hint">
+        Checking this option removes the photo when you save.
+    </p>
+
+</div>
+
+
+            <!-- Save Button -->
+            <button type="submit">
+                Save Changes
+            </button>
+
+        </form>
+
+        <!-- Back Link -->
+        <p class="back-link">
+            <a th:href="@{/items/mine}">
+                ← Back to My Reports
+            </a>
+        </p>
+
+    </div>
+
+</main>
+
+<!-- Prevent Future Dates -->
+<script>
+    const dateInput = document.getElementById("eventDate");
+
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    dateInput.max = `${year}-${month}-${day}`;
+</script>
+
+</body>
+</html>

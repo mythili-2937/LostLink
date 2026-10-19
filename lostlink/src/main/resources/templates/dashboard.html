@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dashboard | LostLink</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <main class="page">
+
+        <div class="card dashboard-card">
+
+            <!-- BRAND -->
+            <div class="brand">LostLink ✦</div>
+
+            <p class="subtitle">
+                Campus Lost & Found Portal
+            </p>
+
+            <!-- WELCOME -->
+            <h1>Welcome to your Dashboard!</h1>
+
+            <p>
+                Signed in as
+                <strong th:text="${campusId}">
+                    Campus ID
+                </strong>
+            </p>
+
+
+            <!-- DASHBOARD FEATURES -->
+            <div class="dashboard-features">
+
+                <!-- CARD 1: BROWSE ITEMS -->
+                <div class="stat-box">
+
+                    <h3>🔎 Browse Lost & Found Items</h3>
+
+                    <p>
+                        Explore items reported by students,
+                        faculty, and campus staff.
+                    </p>
+
+                    <a th:href="@{/items}" class="action-link">
+                        Browse Items →
+                    </a>
+
+                </div>
+
+
+                <!-- CARD 2: REPORT ITEM -->
+                <div class="stat-box">
+
+                    <h3>📦 Report Lost / Found Items</h3>
+
+                    <p>
+                        Lost something or found someone's belongings?
+                        Submit a report here.
+                    </p>
+
+                    <a th:href="@{/items/report}" class="action-link">
+                        Report an Item →
+                    </a>
+
+                </div>
+
+
+                <!-- CARD 3: MY REPORTS -->
+                <div class="stat-box">
+
+                    <h3>📋 My Reports</h3>
+
+                    <p>
+                        View and manage the lost and found
+                        items you have submitted.
+                    </p>
+
+                    <a th:href="@{/items/mine}" class="action-link">
+                        View My Reports →
+                    </a>
+
+                </div>
+
+
+                <!-- CARD 4: MY CLAIMS -->
+                <div class="stat-box">
+
+                    <h3>📝 My Claims</h3>
+
+                    <p>
+                        Track your ownership claim requests
+                        and check their approval status.
+                    </p>
+
+                    <a th:href="@{/claims/mine}" class="action-link">
+                        View My Claims →
+                    </a>
+
+                </div>
+
+
+                <!-- CARD 5: INCOMING CLAIMS -->
+                <div class="stat-box">
+
+                    <h3>📥 Incoming Claims</h3>
+
+                    <p>
+                        Review ownership requests submitted
+                        for the found items you reported.
+                    </p>
+
+                    <a th:href="@{/claims/incoming}" class="action-link">
+                        Review Claims →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOGOUT -->
+            <form th:action="@{/logout}"
+                  method="post"
+                  class="dashboard-logout">
+
+                <input type="hidden"
+                       th:if="${_csrf != null}"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

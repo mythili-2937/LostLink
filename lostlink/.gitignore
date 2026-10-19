@@ -1,0 +1,61 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+### LostLink Security ###
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Local database configuration
+application-local.properties
+application-local.yml
+application-local.yaml
+
+# Uploaded item images
+uploads/
+
+# Postman local workspace files
+.postman/
+postman/globals/
+
+# Sensitive Postman files
+*.postman_environment.json
+
+# Operating system
+.DS_Store
+Thumbs.db
+# JVM crash and debug logs
+hs_err_pid*.log
+replay_pid*.log

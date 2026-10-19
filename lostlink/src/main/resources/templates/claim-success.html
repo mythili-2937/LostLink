@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Claim Submitted | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<main class="listings-page">
+
+    <div class="listings-container">
+
+        <section class="claim-success-card">
+
+            <div class="claim-success-icon">
+                ✓
+            </div>
+
+            <h1>Claim Request Submitted!</h1>
+
+            <p>
+                Your ownership verification request
+                has been submitted successfully.
+            </p>
+
+            <p>
+                The finder can review your claim
+                in the upcoming claim management feature.
+            </p>
+
+            <a th:href="@{/items}"
+               class="claim-submit-btn">
+                Back to Browse Items
+            </a>
+
+        </section>
+
+    </div>
+
+</main>
+
+</body>
+</html>

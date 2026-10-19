@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Claim Item | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<main class="listings-page">
+
+    <div class="listings-container">
+
+        <header class="listings-header">
+
+            <div>
+                <div class="brand">LostLink ✦</div>
+
+                <h1>Claim This Item</h1>
+
+                <p class="subtitle">
+                    Submit your ownership details
+                    for verification.
+                </p>
+            </div>
+
+            <a th:href="@{/items}"
+               class="back-button">
+                ← Browse Items
+            </a>
+
+        </header>
+
+        <div class="claim-layout">
+
+            <!-- FOUND ITEM DETAILS -->
+            <section class="match-source">
+
+                <h2>Found Item Details</h2>
+
+                <h3 th:text="${item.title}">
+                    Black Water Bottle
+                </h3>
+
+                <p>
+                    <strong>Category:</strong>
+                    <span th:text="${item.category}">
+                        Personal Belongings
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    <span th:text="${item.location}">
+                        Library
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    <span th:text="${item.eventDate}">
+                        2026-10-16
+                    </span>
+                </p>
+
+            </section>
+
+            <!-- CLAIM FORM -->
+            <section class="claim-form-card">
+
+                <h2>Ownership Verification</h2>
+
+                <p class="claim-help">
+                    Describe something unique about
+                    this item that proves it belongs
+                    to you.
+                </p>
+
+                <div class="claim-error"
+                     th:if="${error != null}"
+                     th:text="${error}">
+                </div>
+
+                <form method="post"
+                      th:action="@{/claims/submit/{id}(id=${item.id})}">
+
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}">
+
+                    <label for="proofDescription">
+                        Proof of Ownership
+                    </label>
+
+                    <textarea id="proofDescription"
+                              name="proofDescription"
+                              rows="6"
+                              minlength="15"
+                              maxlength="2000"
+                              required
+                              placeholder="Example: My initials are written underneath the bottle..."
+                              th:text="${proofDescription}"></textarea>
+
+                    <p class="claim-hint">
+                        Minimum 15 characters.
+                        Do not include passwords or
+                        other sensitive credentials.
+                    </p>
+
+                    <button type="submit"
+                            class="claim-submit-btn">
+                        Submit Claim Request
+                    </button>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

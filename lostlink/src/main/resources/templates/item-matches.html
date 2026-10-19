@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Matches | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<main class="listings-page">
+
+    <div class="listings-container">
+
+        <!-- PAGE HEADER -->
+        <header class="listings-header">
+
+            <div>
+                <div class="brand">LostLink ✦</div>
+
+                <h1>✨ Smart Matches</h1>
+
+                <p class="subtitle">
+                    Discover possible matches for your
+                    lost or found item.
+                </p>
+            </div>
+
+            <a th:href="@{/items/mine}"
+               class="back-button">
+                ← My Reports
+            </a>
+
+        </header>
+
+
+        <!-- YOUR ORIGINAL REPORT -->
+        <section class="match-source">
+
+            <h2>Your Report</h2>
+
+            <h3 th:text="${sourceItem.title}">
+                Black Water Bottle
+            </h3>
+
+            <p>
+                <strong>Category:</strong>
+                <span th:text="${sourceItem.category}">
+                    Personal Belongings
+                </span>
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                <span th:text="${sourceItem.location}">
+                    Library
+                </span>
+            </p>
+
+            <p>
+                <strong>Type:</strong>
+                <span th:text="${sourceItem.type}">
+                    LOST
+                </span>
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                <span th:text="${sourceItem.eventDate}">
+                    2026-10-15
+                </span>
+            </p>
+
+        </section>
+
+
+        <!-- MATCH RESULTS HEADING -->
+        <div class="match-results-header">
+
+            <h2>Suggested Matches</h2>
+
+            <p>
+                Results are ranked using category,
+                description, location and date similarity.
+            </p>
+
+        </div>
+
+
+        <!-- NO MATCHES -->
+        <div class="empty-state"
+             th:if="${#lists.isEmpty(matches)}">
+
+            <h3>No possible matches found yet</h3>
+
+            <p>
+                We couldn't find a sufficiently similar
+                report right now.
+                Check again when new items are reported.
+            </p>
+
+            <a th:href="@{/items}"
+               class="match-action">
+                Browse All Items
+            </a>
+
+        </div>
+
+
+        <!-- MATCH RESULTS GRID -->
+        <div class="items-grid"
+             th:if="${not #lists.isEmpty(matches)}">
+
+            <!-- IMPORTANT:
+                 Everything using 'match'
+                 must remain inside this article.
+            -->
+            <article class="item-card"
+                     th:each="match : ${matches}">
+
+
+                <!-- MATCH SCORE AND CONFIDENCE -->
+                <div class="match-confidence">
+
+                    <div class="match-confidence-header">
+
+                        <strong th:text="${match.score + '%'}">
+                            85%
+                        </strong>
+
+                        <span class="confidence-badge"
+                              th:classappend="${'confidence-' + #strings.toLowerCase(match.confidence)}"
+                              th:text="${match.confidence + ' MATCH'}">
+                            HIGH MATCH
+                        </span>
+
+                    </div>
+
+
+                    <!-- SIMILARITY PROGRESS BAR -->
+                    <div class="match-progress">
+
+                        <div class="match-progress-fill"
+                             th:style="|width: ${match.score}%;|">
+                        </div>
+
+                    </div>
+
+
+                    <!-- MATCH EXPLANATIONS -->
+                    <div class="match-reasons">
+
+                        <h4>Why this item may match</h4>
+
+                        <ul>
+
+                            <li th:each="reason : ${match.reasons}"
+                                th:text="${reason}">
+                                Same item category
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MATCHED ITEM IMAGE -->
+                <div class="item-image-wrap"
+                     th:if="${match.item.imageFilename != null
+                             and !#strings.isEmpty(match.item.imageFilename)}">
+
+                    <img class="item-image"
+                         th:src="@{/items/images/{filename}(filename=${match.item.imageFilename})}"
+                         alt="Possible matching item"
+                         loading="lazy">
+
+                </div>
+
+
+                <!-- ITEM TITLE -->
+                <h3 th:text="${match.item.title}">
+                    Found Black Water Bottle
+                </h3>
+
+
+                <!-- CATEGORY -->
+                <p class="item-category"
+                   th:text="${match.item.category}">
+                    Personal Belongings
+                </p>
+
+
+                <!-- DESCRIPTION -->
+                <p class="item-description"
+                   th:text="${match.item.description}">
+                    A black water bottle was found
+                    near the library entrance.
+                </p>
+
+
+                <!-- ITEM DETAILS -->
+                <div class="item-meta">
+
+                    <p>
+                        📍
+                        <strong>Location:</strong>
+
+                        <span th:text="${match.item.location}">
+                            Library Entrance
+                        </span>
+                    </p>
+
+                    <p>
+                        📅
+                        <strong>Date:</strong>
+
+                        <span th:text="${match.item.eventDate}">
+                            2026-10-16
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Type:</strong>
+
+                        <span th:text="${match.item.type}">
+                            FOUND
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        <span th:text="${match.item.status}">
+                            OPEN
+                        </span>
+                    </p>
+
+                </div>
+
+            </article>
+            <!-- END OF MATCH LOOP -->
+
+        </div>
+        <!-- END OF MATCH GRID -->
+
+
+        <!-- SAFETY INFORMATION -->
+        <section class="match-source"
+                 style="margin-top: 28px;">
+
+            <h3>🔒 Important Reminder</h3>
+
+            <p>
+                These are suggested matches based on
+                report similarity. A high score does not
+                guarantee that the items are identical.
+            </p>
+
+            <p>
+                Always verify ownership before handing
+                over a found item.
+            </p>
+
+        </section>
+
+
+        <!-- BACK TO REPORTS -->
+        <div style="margin-top: 24px;">
+
+            <a th:href="@{/items/mine}"
+               class="match-action">
+                ← Back to My Reports
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

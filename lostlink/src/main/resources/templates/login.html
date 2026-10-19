@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Login | LostLink</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+</head>
+
+<body class="login-page">
+
+    <main class="auth-card">
+
+        <!-- Logo -->
+        <div class="logo">✿ LostLink</div>
+
+        <p class="subtitle">
+            Campus Lost & Found Portal
+        </p>
+
+        <!-- Heading -->
+        <h2>Welcome Back</h2>
+
+        <p class="hint">
+            Sign in using your Campus ID
+        </p>
+
+        <!-- Error Message -->
+        <p class="error"
+           th:if="${param.error}">
+            Invalid campus ID or password.
+        </p>
+
+        <!-- Logout Success Message -->
+        <p class="success"
+           th:if="${param.logout}">
+            You have logged out successfully.
+        </p>
+
+        <!-- Login Form -->
+        <form th:action="@{/login}" method="post">
+
+            <!-- Campus ID -->
+            <label for="campusId">
+                Campus ID
+            </label>
+
+            <input id="campusId"
+                   name="campusId"
+                   type="text"
+                   placeholder="DEMO-STU001"
+                   autocomplete="username"
+                   required>
+
+            <!-- Password -->
+            <label for="password">
+                Password
+            </label>
+
+            <input id="password"
+                   name="password"
+                   type="password"
+                   placeholder="Enter your password"
+                   autocomplete="current-password"
+                   required>
+
+            <!-- Login Button -->
+            <button type="submit" class="login-button">
+                Sign In →
+            </button>
+
+        </form>
+
+        <!-- Footer -->
+        <p class="footer-text">
+            Secure access for authorized campus members
+        </p>
+
+    </main>
+
+</body>
+</html>
